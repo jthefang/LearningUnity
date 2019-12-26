@@ -1,4 +1,5 @@
 
+
 # Table of Contents
 - [Unity UI](#unity-ui)
 - [Assets](#assets)
@@ -15,6 +16,8 @@
 - [Scripts](#scripts)
 	- [Collision detection](#collision-detection)
 	- [Random rotations](#random-rotations)
+	- [Custom player control](#custom-player-control)
+	- [Top down shooter](#top-down-shooter)
 - [Input Manager](#input-manager)
 - [Animation](#animation)
 	- [Add simple move left animation](#add-simple-move-left-animation)
@@ -110,6 +113,7 @@
 ## Prefab
 - abstraction for a GameObject = underlying "class" that you can use as blueprint for a bunch of GameObject instances
 - => changing the Prefab changes all GameObject instances connected to it
+	- or if you change a GameObject instance: Inspector --> Overrides --> Apply to all (this will apply the changes you made to the GO to the Prefab => all GO instances)
 - always modify a Prefab instead of the GameObject directly (unless you're experimenting)
 - create a prefab by dragging GameObject from hierarchy view to Project folder
 - Open prefab (Inspector) to edit --> back button in Hierarchy to return to Scene view
@@ -122,8 +126,20 @@
 - Have camera follow player by:
 	- CameraMount GameObject => Add Camera as a child to this object
 	- Add a `CameraMovement.cs` script to CameraMount 
-		- see script in Bobblehead Wars
-	- set Follow Target = player
+		```c
+		public  class CameraMovement : MonoBehaviour {
+			public  GameObject followTarget;
+			public  float moveSpeed;
+			// FixedUpdate is called at fixed rate independent of frame rate
+			void FixedUpdate()
+			{
+				if (followTarget != null) {
+					transform.position = Vector3.Lerp(transform.position, followTarget.transform.position, Time.deltaTime * moveSpeed); //eases camera to follow target with a certain speed
+				}
+			}
+		}
+	```
+- set Follow Target = player
 - Align scene view with camera view by clicking on Scene view → Select Main Camera in Hierarchy → GameObject -> Align View to Selected
 ## Adding components
 - Copy/paste entire component values by clicking the Gear icon (top right)
@@ -174,6 +190,8 @@
 # Scripts
 - script derives from class called `MonoBehaviour`
 - Public fields in scripts will be editable in the Unity Inspector
+- **Tag** a game object to reference it in your script, e.g. `player = GameObject.FindGameObjectWithTag("Player");`
+	- select GO --> Inspector --> Tag dropdown --> select tag (e.g. `Player`)
 - `Update()`
 	- occurs at every single frame (=> no heavy processing)
 - `OnEnable()`
@@ -217,6 +235,7 @@ public class PlayerController : MonoBehaviour {
        }
    }
 ```
+- The `collision` object contains info about contact points and impact velocities
 ## Random rotations
 ```c#
        float randomX = UnityEngine.Random.Range(10f, 100f);
@@ -226,7 +245,262 @@ public class PlayerController : MonoBehaviour {
        Rigidbody bomb = GetComponent<Rigidbody>();
        bomb.AddTorque(randomX, randomY, randomZ);
 ```
+## Custom player control
+```c#
+public class PlayerMovement : MonoBehaviour
+{
+    public float acceleration;
+    public float maxSpeed;
+    private Rigidbody rigidBody;
+    private KeyCode[] inputKeys; //array of keycodes used to detect input
+    private Vector3[] directionsForKeys; //array of Vector3 variables for directional data
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        inputKeys = new KeyCode[] {KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D};
+        directionsForKeys = new Vector3[] {Vector3.forward, Vector3.left, Vector3.back, Vector3.right};
+        rigidBody = GetComponent<Rigidbody>();
+    }
+
+    // Update is called once per frame
+    void FixedUpdate() //framerate independent Update (used when working with rigidbodies), fired at constant interval
+    {
+        for (int i = 0; i < inputKeys.Length; i++) {
+            var key =  inputKeys[i];
+            if (Input.GetKey(key)) { //if this key was fired
+                Vector3 movement = directionsForKeys[i] * acceleration * Time.deltaTime; // time it took to complete the last frame
+                movePlayer(movement);
+            }
+        }
+    }
+
+    void movePlayer(Vector3 movement) {
+        if (rigidBody.velocity.magnitude * acceleration > maxSpeed) {
+            //if current speed exceeds maxSpeed => force slows player down (enforcing speed limit)
+            rigidBody.AddForce(movement * -1);
+        } else { //apply force to rigid body causing it to move
+            rigidBody.AddForce(movement); 
+        }
+    }
+}
+```
+## Top down shooter
+- GameObjects:
+	- CameraRig --> Main Camera (child)
+	- Player (3D sphere) - this is a prefab (for GameController respawn player)
+		- RigidBody for collisions
+		- Player.cs, PlayerMovement.cs (see above), PlayerShooting.cs
+	- Enemy (3D cube) - this is a prefab (for spawning)
+		- RigidBody for collisions
+		- Enemy.cs
+	- Projectile (3D capsule) - this is a prefab (for shooting)
+		- RigidBody for collisions
+		- Projectile.cs
+	- Enemy Producer
+		- EnemyProducer.cs
+	- GameController
+		- GameController.cs
+```c#
+using System;
+public  class Player : MonoBehaviour { // on player
+	public  int health = 3;
+	public  event  Action<Player> onPlayerDeath; //C# event lets you broadcast changes in objects to any listeners (i.e. the GameController script)
+	void collidedWithEnemy(Enemy enemy) {
+		enemy.Attack(this);
+		if (health <= 0) {
+			if (onPlayerDeath != null) {
+				onPlayerDeath(this);
+			}
+		}
+	}
+	void OnCollisionEnter(Collision col) {
+		Enemy enemy = col.collider.gameObject.GetComponent<Enemy>(); //enemy is a custom script attached to an enemy GO
+		if (enemy) { //player can collide with other objects that aren't Enemy's, make sure this isn't what we detected collision with
+			collidedWithEnemy(enemy);
+		}
+	}
+}
+```
+```c#
+public class Enemy : MonoBehaviour { // on enemy GO
+	public  float moveSpeed;
+	public  int health;
+	public  int damage;
+	public  Transform targetTransform; //this will be the player's transform
+	// Update is called once per frame
+	void FixedUpdate() {
+		if (targetTransform != null) {
+			this.transform.position = Vector3.MoveTowards(this.transform.position, 				targetTransform.transform.position, Time.deltaTime * moveSpeed); //follow the player
+		}
+	}
+
+	public  void TakeDamage(int damage) {
+		health -= damage;
+		if (health <= 0) {
+			Destroy(this.gameObject); //destroy itself
+		}
+	}
+
+	public  void Attack(Player player) { //custom script attached to Player GO
+		player.health -= this.damage;
+		Destroy(this.gameObject);
+	}
+	
+	public  void Initialize(Transform target, float moveSpeed, int health) {
+		this.targetTransform = target;
+		this.moveSpeed = moveSpeed;
+		this.health = health;
+	}
+}
+```
+```c#
+public class Projectile : MonoBehaviour {
+	public  float speed;
+	public  int damage;
+
+	Vector3 shootDirection; //determines where projectile will go
+
+	void FixedUpdate() {
+		this.transform.Translate(shootDirection * speed, Space.World);
+	}
+
+	public  void FireProjectile(Ray shootRay) {
+		this.shootDirection = shootRay.direction;
+		this.transform.position = shootRay.origin;
+		rotateInShootDirection();
+	}
+
+	void OnCollisionEnter(Collision col) {
+		Enemy enemy = col.collider.gameObject.GetComponent<Enemy>();
+		if (enemy) {
+			enemy.TakeDamage(damage);
+		}
+		Destroy(this.gameObject);
+	}
+	
+	void rotateInShootDirection() { //rotates this Projectile object towards its shoot direction
+		Vector3 newRotation = Vector3.RotateTowards(transform.forward, shootDirection, 0.01f, 0.0f);
+		transform.rotation = Quaternion.LookRotation(newRotation);
+	}
+} 
+
+public  class PlayerShooting : MonoBehaviour { //on player GO
+	public  Projectile projectilePrefab; //reference to projectile prefab => create new instance on each player firing
+	public  LayerMask mask; //used to filter GameObjects
+
+	void shoot(RaycastHit hit) {
+		var projectile = Instantiate(projectilePrefab).GetComponent<Projectile>(); //instantiates a projectile prefab and gets its Projectile script component so it can be initialized
+		var pointAboveFloor = hit.point + new  Vector3(0, this.transform.position.y, 0); //x, z coordinates = where ray cast from mouse click position hits (ensures projectile is parallel to ground)
+		var direction = pointAboveFloor - transform.position; //position from Player --> ptAboveFloor
+		var shootRay = new  Ray(this.transform.position, direction);
+		//Debug.DrawRay(shootRay.origin, shootRay.direction * 100.1f, Color.green, 2); //for debugging purposes (you can see this in the scene view)
+
+		Physics.IgnoreCollision(GetComponent<Collider>(), projectile.GetComponent<Collider>()); //ignore collisions between Player collider and Projectile collider (o/w triggered before the projectile even flies off)
+		projectile.FireProjectile(shootRay); //set trajectory for projectile (see Projectile.cs)
+	}
+	
+	// Casts a ray from camera to pt where mouse clicked, checks if ray intersects a GO with the given LayerMask
+	void raycastOnMouseClick() {
+		RaycastHit hit;
+		Ray rayToFloor = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+		//Debug.DrawRay(rayToFloor.origin, rayToFloor.direction * 100.1f, Color.red, 2);
+		if (Physics.Raycast(rayToFloor, out hit, 100.0f, mask, QueryTriggerInteraction.Collide)) {
+			shoot(hit);
+		}
+	}
+	
+	// Update is called once per frame
+	void Update()
+	{
+		bool mouseButtonDown = Input.GetMouseButtonDown(0); //left click
+		if (mouseButtonDown) {
+			raycastOnMouseClick();
+		}
+	}
+}
+```
+- Raycasts point in a direction (invisible rays), any GameObjects that it intersects with will be registered by Unity
+	- use a mask to filter out any unwanted objects in that ray path
+```c#
+public  class EnemyProducer : MonoBehaviour {	
+	public  bool shouldSpawn; //toggles spawning
+	public  Enemy[] enemyPrefabs; //pick random enemy prefab from this and instantiate it (e.g. set size = 1, element 0 = Enemy prefab)
+	public  float[] moveSpeedRange; //enemy speed range (e.g. size = 2, element0 = 3, element1 = 8)
+	public  int[] healthRange; //enemy health range (e.g. size = 2, element0 = 2, element1 = 6)
+
+	private  Bounds spawnArea; //the BoxCollider size we put on this GameObject
+	private  GameObject player; //reference to player that you'll pass to the enemy objects
+
+	public  void SpawnEnemies(bool shouldSpawn) {
+		if (shouldSpawn) {
+			player = GameObject.FindGameObjectWithTag("Player");
+		}
+		this.shouldSpawn = shouldSpawn;
+	}
+
+	// Start is called before the first frame update
+	void Start() {
+		spawnArea = this.GetComponent<BoxCollider>().bounds;
+		SpawnEnemies(shouldSpawn);
+		InvokeRepeating("spawnEnemy", 0.5f, 1.0f); //call after 0.5 secs, then every 1s
+	}
+
+	Vector3 randomSpawnPosition() {
+		float x = Random.Range(spawnArea.min.x, spawnArea.max.x);
+		float z = Random.Range(spawnArea.min.z, spawnArea.max.z);
+		float y = 0.5f; //just the height of our stage (game specific)
+
+		return  new  Vector3(x, y, z);
+	}
+
+	void spawnEnemy() {
+		if (shouldSpawn == false || player == null) {
+			return;
+		}
+
+		int index = Random.Range(0, enemyPrefabs.Length);
+		var newEnemy = Instantiate(enemyPrefabs[index], randomSpawnPosition(), Quaternion.identity) as  Enemy;
+		var randomMoveSpeed = Random.Range(moveSpeedRange[0], moveSpeedRange[1]);
+		var randomHeath = Random.Range(healthRange[0], healthRange[1]);
+		newEnemy.Initialize(player.transform, randomMoveSpeed, randomHeath); //instantiate the enemy (custom Initialize function, see enemy.cs)
+	}
+}
+```
+- This is the game object that spawns the Enemies
+	- the public fields are set in the Inspector
+	- the `BoxCollider` attached to the GameObject gives the bounds within which the enemies will spawn
+```c#
+public  class GameController : MonoBehaviour {
+	public  EnemyProducer enemyProducer;
+	public  GameObject playerPrefab;
+
+	// Start is called before the first frame update
+	void Start() {
+		var player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+		player.onPlayerDeath += onPlayerDeath; //subscribes for the onPlayerDeath event
+	}
+
+	void onPlayerDeath(Player player) {
+		enemyProducer.SpawnEnemies(false); //stop enemy production
+		Destroy(player.gameObject);
+		Invoke("restartGame", 3); //invoke after 3 seconds
+	}
+	
+	void restartGame() {
+		var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+		foreach (var enemy in enemies) {
+			Destroy(enemy);
+		}
+		var playerObject = Instantiate(playerPrefab, new  Vector3(0, 0.5f, 0), Quaternion.identity) as  GameObject;
+		var cameraRig = Camera.main.GetComponent<CameraRig>();
+		cameraRig.target = playerObject;
+		enemyProducer.SpawnEnemies(true);
+		playerObject.GetComponent<Player>().onPlayerDeath += onPlayerDeath; //add event subscription
+	}
+}
+```
 # Input Manager
 - Edit --> Project Settings --> Input --> Expand axes
 - size = number of inputs to the game (default 18 is plenty)
