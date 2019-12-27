@@ -1,5 +1,3 @@
-
-
 # Table of Contents
 - [Unity UI](#unity-ui)
 - [Assets](#assets)
@@ -31,6 +29,10 @@
 	- [Random pitch](#random-pitch)
 - [Particle systems](#particle-systems)
 	- [Scripting](#scripting)
+- [UI](#ui)
+	- [Hooking it up to a script](#hooking-it-up-to-a-script)
+	- [Add animations to buttons](#add-animations-to-buttons)
+	- [Creating a sliding menu](#creating-a-sliding-menu)
 # Unity UI
 - Hand tool - `Q`
 	- allows you to pan around the scene
@@ -515,7 +517,7 @@ public  class GameController : MonoBehaviour {
 - Window → Animation → Animation (`Cmd + 6)` 
 	- To get the animation window
 - Select GameObject to animate → Create → Save to create a new animation
-	- Adds **animation component** to the GO that points to a `[GO_Name].controller`
+	- Adds **animator component** to the GO that points to an animator controller `[GO_Name].controller`
 	- The **animation clip** allows you to animate several properties of your GO
 		- e.g. transform, material color, light intensity, volume of sound, variables in your own scripts
 - Animation view
@@ -523,10 +525,12 @@ public  class GameController : MonoBehaviour {
 	- The timeline is measure in [seconds]:[frames] (e.g. 3:14 = 3 seconds and 14 frames)
 	- Dope sheet = overview of keyframe timing for multiple properties
 - Decrease samples to change speed of animation
+- The controller `[GO_name].controller` contains the option to **loop** the animation (on by default)
 ## Add simple move left animation
 - Add property → Transform → Position
 - Click on time X you want the movement to occur => change position x to -val
 - This adds a **keyframe** that changes the property's value at this particular time
+- Another way to do it is to click the red record button --> click the key time on the timeline --> change transform position X in the inspector --> stop recording by clicking record button again
 ## Adding sound effects
 - Click + drag audio file to GO, this adds an Audio Component
 	- Disable by unchecking the audio component
@@ -546,6 +550,9 @@ public  class GameController : MonoBehaviour {
 	- Unity default blends transitions together
 	- To change this
 		- Click transition arrow → inspector → settings → Exit time = 1, transition duration = 0
+- You can **copy and paste** animation states
+	- set speed to -1 to **reverse animation**
+- Right click state --> **Set as Layer default state** to have this state be the entry animation/state
 - Transition settings
 	- **Has exit time** = whether transition can be triggered at any time or only after specified exit time
 	- **Exit time** = earliest time after which transition can start (specified in **normalized time**, e.g. 0.75 = transition starts only when animation is 75% complete)
@@ -559,11 +566,13 @@ public  class GameController : MonoBehaviour {
 - **Condition** used to decide when transition occurs
 	- Can have more than 1 condition per transition (=> all conditions must be met to trigger the condition
 	- If you want 1 condition OR another condition to trigger a transition => add another transition between the 2 states + another condition with that transition
-- **Trigger** = boolean parameter that is rest to false once transition is triggered once
+- **Trigger** = boolean parameter that is set to false once transition is triggered once
 	- To trigger a state:
 		- Parameters tab → + → Trigger => Click on transition arrow → Conditions → + 
 - **Int** - e.g. count how many times GO is hit => play special animation on the 10th time
 	- Can assign a **default value** to this parameter 
+- **Bool** - add as parameter in Animator --> click on a transition and add condition bool = T/F
+	- this makes it so that whenever the bool is T/F the transition is triggered
 ## State machine behaviors
 - Have GO do something only when it's in a certain state
 - Animator view → Click on state → Inspector → Add behavior → new script
@@ -670,7 +679,119 @@ void OnCollisionEnter(Collision col)
 	- e.g. to have particles fade away over time => click top right marker and set alpha to 0
 ## Scripting
 - You can have particles emit on certain actions => have script accept a prefab with a particle system
+# UI
+- UI is added as a scene (put in Scenes folder)
+	- nice to also have a UI folder in Assets with subfolders for Fonts, Menu (background images, buttons, icons and game art)
+	- you want UI assets to have Inspector -> Texture Type = **Sprite (2D and UI)**
+- Creating an element: GameObject -> UI -> Image
+	- will create an Image GameObject as child of a Canvas object
+	- **Canvas** - root object for all UI elements
+	- **Image** - non-interactive control that displays a sprite
+		- has source image field in Inspector --> Image (Script) where you can drag an image file
+		- click **Set Native Size** in Inspector to set image to a better aspect ratio (e.g. 1136x640)
+	- **EventSystem** - processes and routes input events to objects within a scene (e.g. manages raycasting)
+- Fonts
+	- drag font to Text GO --> Inspector --> Font field
+- Making background fill up screen (no matter the resolution)
+	- Canvas --> Canvas Scaler --> UI Scale Mode
+		- change this to **Scale with Screen Size** and X: 1136, Y:640, Match = 1
+		- this makes it so that the UI looks the same on any device
+	- Image --> Add component --> Aspect Ratio Fitter --> Aspect Mode: set to **Envelope Parent** (now image fills the screen)
+- **Anchors**
+	- control the position and size of your UI elements relative to their parent object
+	- position/transform of UI element = position of its **pivot** (blue circle) is relative to its **anchors** (white markers)
+		- 0,0 is the top left corner of the Canvas
+	- you can move your anchors around using the rect tool `T`
+		- you can split them, which allows you to squash your UI elements in the horizontal or vertical directions
+		- Quick select anchor position by clicking rectangle above `Anchors` in Inspector (or custom drag them after pressing `T`)
+			- `Stretch` means the UI element will be fixed either vertically/horizontally and stretch horizontally/vertically 
+	- can rotate your UI element around the pivot
+		- hold `Alt` while scaling to scale around the pivot point
+	- Scale (negative values = flips image) is not the same as size (width and height, can't be negative)
+- To make floor of background not get cut off
+	- Disable its Aspect Ratio Fitter
+	- Set Pivot to X: 0.5, Y: 0
+	- Re-enable Aspect Ratio Fitter
+- GO -> UI -> **Panel**
+	- to make a settings dialog panel
+	- default is alpha of 100 (change color --> A level to 255 to remove this transparency)
+- **Toggle**
+	- basically a checkbox
+	- contains a **background** (image that is always visible), **checkmark** (image that is only visible when toggle is active/ON), **label** (label displayed next to toggle)
+	- script component --> Is On controls the default state of the toggle checkbox
+	- to have the toggle affect something, add + On Value Changed event in the Inspector
+		- e.g. to mute the game music, drag GO with the game music as an AudioSource component to this event element --> Function --> AudioSource --> mute (in dynamic bool section, which sets mute = toggle's is active status)
+- **Slider**
+	- for range of values
+	- contains a **background** (image that shows bounds of slider and its inner area when not filled, i.e. handle all the way left), **handle** (image for handle), **fill** (image that stretches to show the value of the slider)
+	- script component --> value 
+		- determines the sliders default value
+	- to have the slider affect something, + On Value Changed in Inspector
+		- e.g. to change volume of game music, drag GO with game music as AudioSource to this event element --> Function --> AudioSource --> volume (in dynamic float section)
+- Text
+	- set horizontal overflow to overflow if you don't want the text to wrap
+## Buttons
+- GameObject -> UI -> Button
+	- Has Text GO child and a Button (script) attached to it
+- use **9-slice-scaling** so that one small image scales to fit all button sizes
+	- click on the image file asset --> Inspector --> `Sprite editor` --> change border to L: 14, R:14, B: 16, T:16 (essentially divide the image into the 9 sections) --> click apply at top of the sprite editor
+	- change button GO --> Inspector --> Image Type: sliced, Button Transition: sprite swap 
+		- then you can select different images for the highlighted/pressed state of the button (make sure to apply the 9 slice scaling above to these images as well)
+- NOTE: the Button's script --> Transition --> **Color Tint** property will default highlight the button when it's hovered over, and tint it when it's clicked
+## Hooking it up to a script
+- can't call static methods => create a UIManager GameObject with a `UIManager.cs` script
+- `restartDialog.SetActive(false);` to have UI object `restartDialog` be hidden
+- To reload the current scene
+```c#
+public  void RestartGame() {
+	Application.LoadLevel(Application.loadedLevelName);
+}
+```
+- to have the button start another scene:
+	- Open File --> Build settings --> Drag the scenes you want to build into the dialog --> close it
+	```c#
+	using UnityEngine.SceneManagement; //allows you to load other scenes
 
+	public  class UIManager : MonoBehaviour {
+		public  void StartGame() {
+			SceneManager.LoadScene("RocketMouse"); //a scene we added to the Build Settings
+		}
+	}
+	```
+	- Then on the start button --> Inspector --> On click list --> + add --> Drag UIManager GO to this new item --> Click dropdown function --> UIManager (script) --> select the StartGame() function
+	- this makes the button trigger the function that loads the new scene
+- to have button trigger a state transition/animation
+```c#
+public  class UIManager : MonoBehaviour {
+	public  Animator startButton; //hook these up to the StartButton GameObject in inspector (will automatically get the animator component of it)
+	public  Animator settingsButton;
+	public  Animator dialog;
+
+	public  void OpenSettings() {
+		startButton.SetBool("isHidden", true);
+		settingsButton.SetBool("isHidden", true);
+		dialog.SetBool("isHidden", true); //transitions dialog from Idle state to SettingsDialogSlideIn in our animator
+	}
+
+	public  void CloseSettings() {
+		startButton.SetBool("isHidden", false);
+		settingsButton.SetBool("isHidden", false);
+		dialog.SetBool("isHidden", true);
+	}
+	...
+}
+```
+## Add animations to buttons
+- just like you would on any normal GameObject (see above)
+- if you want your UI elements to fly off the screen, change the anchors (e.g. if you want them to fly off top of screen, change anchors to top stretch, so that positioning is relative to the top of the screen => you can guarantee the position is off the top edge of the screen)
+## Creating a sliding menu
+- Add a button to the bottom left hand side of the canvas
+- Add a Panel "mask" as the child of the button (with same width, but height = amount of buttons you want to fit in the menu)
+	- a mask = window for content (can be hidden)
+- Add a Panel for content as child of masking panel
+	- add a background image to this
+- Add buttons to panel content
+- Animate the panel content to slide in and out of the parent panel mask
 
 
 
