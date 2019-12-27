@@ -11,6 +11,9 @@
 	- [Labels](#labels)
 	- [GameManager](#gamemanager)
 - [Hierarchy](#hierarchy)
+- [Sprites](#sprites)
+	- [Sprite Layers](#sprite-layers)
+- [Game Physics](#game-physics)
 - [Scripts](#scripts)
 	- [Collision detection](#collision-detection)
 	- [Random rotations](#random-rotations)
@@ -189,6 +192,40 @@
 - Can require an Audio Source component to have game music (check the loop option for this) 
 # Hierarchy
 - `Cmd + Delete` to delete a GameObject
+# Sprites
+- Sprite modes
+	- Single - single image sprite
+	- Multiple - sprite with multiple elements (e.g. animations, spritesheets, etc)
+		- spritesheets - draw multiple sprites together in one image 
+		- every image used in your game = one draw call => could be a potential issue if you have thousands of sprites
+	- Polygon - custom polygon shaped sprite (e.g. Triangle, Square, Pentagon, Hexagon, etc)
+- **Sprite Editor** (click sprite --> sprite editor) lets you slice and edit sprites
+	- you can slice automatically or manually via **Grid By Cell Size** => give width and height of slices (X, Y respectively), slice and apply
+- Sprite will be invisible unless you render it: GameObject --> Add component --> Sprite Renderer --> Drag image to Sprite field
+- **Pixels per unit** field of sprite
+	- [width of sprite image / pixels per unit] * [x scale] = [width of sprite in units on screen]
+- Sprite image quality and compression
+	- click on sprite --> Inspector --> max size, compression, crunch compression
+	- play with what gives the best quality for performance
+- Add animation --> Create clip --> Add property --> Sprite Renderer --> Sprite 
+## Sprite Layers
+- Sprite renderer --> **order in layer** property (higher = more in front)
+	- this is the order the Unity engine will render the sprites
+	- default is 0 => for overlapping sprites give them an ordering so that the unity engine consistently renders them in the right layer ordering (else they'll flicker overlap each other)
+- Layers dropdown (top right) --> Edit Layers --> Sorting layers --> click to add layers (top layers are rendered first/below the subsequent layers)
+	- GO --> Inspector --> Sprite Renderer --> Sorting Layer dropdown, select which layer this object should belong to
+# Game Physics
+- Edit --> Project Settings --> Project 2D --> gravity Y (set negative value for real gravity)
+- Every object that should interact with gravity and other physics objects should have a **Collider 2D** (for collision detection) and **Rigidbody 2D** (uses unity's physics engine) component
+	- Rigidbody 2D - gravity will affect sprite, can control sprite with scripts using forces
+		- change to **Kinematic** if you want to move bodies via a transform component (not just gravity alone), **Dynamic** (leaves under control of Unity's gravity), **Static** if they don't move at all
+		- **mass, linear drag, angular drag** properties
+	- Collider 2D - sprite will interact with other objects
+		- Polygon 2D colliders - more performance heavy than Box/Circle Collider 2D components, but more precise physical interaction
+	- click GO --> Inspector --> Edit Collider to create/delete points and mold the Polygon Collider to better fit the shape of your sprite
+	- uses `OnCollisionEnter2D` to handle collisions with other objects 
+- Colliders can be used in **Trigger** mode - won't physically collide, but instead they'll trigger `OnTriggerEnter2D()` on the attached scripts
+- Can assign **Physics2D materials** to colliders to control properties like bounciness and friction
 # Scripts
 - script derives from class called `MonoBehaviour`
 - Public fields in scripts will be editable in the Unity Inspector
@@ -246,6 +283,52 @@ public class PlayerController : MonoBehaviour {
  
        Rigidbody bomb = GetComponent<Rigidbody>();
        bomb.AddTorque(randomX, randomY, randomZ);
+```
+## Layer masks and coroutines
+- selectively filters out certain layers
+	- commonly used with raycasts (i.e. have bomb explosion stop at the wall blocks)
+- Unity Editor --> Layer dropdown (top right) --> Add user layer by naming it something
+	- add game object --> Inspector --> layer to the custom layer
+- Coroutines are kind of like threads (?) 
+```c#
+public  GameObject explosionPrefab;
+public  LayerMask levelMask;
+
+// Start is called before the first frame update
+void Start() {
+	Invoke("Explode", 3f);
+}
+
+void Explode() {
+	//spawn explosion at bomb's position
+	Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+	
+	StartCoroutine(CreateExplosions(Vector3.forward));
+	StartCoroutine(CreateExplosions(Vector3.right));
+	StartCoroutine(CreateExplosions(Vector3.back));
+	StartCoroutine(CreateExplosions(Vector3.left));
+
+	//disable bomb's renderer, making it invisible
+	GetComponent<MeshRenderer>().enabled = false;
+	//disable collider, allowing players to move through/walk into explosion
+	transform.Find("Collider").gameObject.SetActive(false);
+	//destroys bomb after 0.3s => all explosions will spawn before bomb is destroyed
+	Destroy(gameObject, .3f);
+}
+
+private  IEnumerator CreateExplosions(Vector3 direction) {
+	for (int i = 1; i < 3; i++) { //explosion will reach 2 units (meters)
+		RaycastHit hit; //info about what and at which position Raycast hits
+		Physics.Raycast(transform.position + new  Vector3(0, 0.5f, 0), direction, out hit, i, levelMask); //sends raycast from center of bomb towards direction, outputs result to hit, i = distance ray should travel, use layer mask to make sure ray only checks for blocks in the level and ignores player and other colliders
+
+		if (!hit.collider) { //if no hit => its a free tile => spawn an explosion there
+			Instantiate(explosionPrefab, transform.position + (i * direction), explosionPrefab.transform.rotation);
+		} else { //hit a block/wall in the layer mask
+			break; //break => explosion doesn't jump over walls
+		}
+		yield  return  new  WaitForSeconds(.05f); //wait 0.05s before next iteration => explosion looks like its expanding outwards
+	}
+}
 ```
 ## Custom player control
 ```c#
