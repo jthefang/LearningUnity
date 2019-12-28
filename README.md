@@ -13,6 +13,7 @@
 - [Hierarchy](#hierarchy)
 - [Sprites](#sprites)
 	- [Sprite Layers](#sprite-layers)
+	- [Tilemap](#tilemap)
 - [Game Physics](#game-physics)
 - [Scripts](#scripts)
 	- [Collision detection](#collision-detection)
