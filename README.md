@@ -199,6 +199,7 @@
 		- spritesheets - draw multiple sprites together in one image 
 		- every image used in your game = one draw call => could be a potential issue if you have thousands of sprites
 	- Polygon - custom polygon shaped sprite (e.g. Triangle, Square, Pentagon, Hexagon, etc)
+- Filter mode --> Point (no filter) to remove ugly blur
 - **Sprite Editor** (click sprite --> sprite editor) lets you slice and edit sprites
 	- you can slice automatically or manually via **Grid By Cell Size** => give width and height of slices (X, Y respectively), slice and apply
 - Sprite will be invisible unless you render it: GameObject --> Add component --> Sprite Renderer --> Drag image to Sprite field
@@ -214,6 +215,23 @@
 	- default is 0 => for overlapping sprites give them an ordering so that the unity engine consistently renders them in the right layer ordering (else they'll flicker overlap each other)
 - Layers dropdown (top right) --> Edit Layers --> Sorting layers --> click to add layers (top layers are rendered first/below the subsequent layers)
 	- GO --> Inspector --> Sprite Renderer --> Sorting Layer dropdown, select which layer this object should belong to
+## TileMap
+- 2DObject --> TileMap
+- Import photoshop file
+	- sprite mode: multiple
+	- pixels per unit: 32 (or whatever)
+	- filter mode: Point 
+	- compression: none
+	- Sprite editor to slice tiles
+- Tilemap object (child of Grid) = a layer 
+- Window --> 2D --> Tile Palette
+	- Create new Palette (save in Assets/Palettes)
+	- Drag sprite sheet over to the Tile Palette area, save tiles in Assets/Tiles/[what ever these tiles are]
+	- Use Active Tilemap dropdown to select which tilemap layer to draw tiles onto
+	- use brush tool (B) in Tile Palette, select tile(s) you want to paint onto the grid
+	- Select tool to select tiles, move tool to move selected tiles
+- Edit --> Project Settings --> Quality --> Disable anti aliasing to remove blurred edges/lines between your tiles
+- Check end of Brackeys video for **animated tiles** and **rule based tiles** (have tile map auto detect which tiles should be placed based off neighboring tiles, e.g. like road building): [https://www.youtube.com/watch?v=ryISV_nH8qw](https://www.youtube.com/watch?v=ryISV_nH8qw)
 # Game Physics
 - Edit --> Project Settings --> Project 2D --> gravity Y (set negative value for real gravity)
 - Every object that should interact with gravity and other physics objects should have a **Collider 2D** (for collision detection) and **Rigidbody 2D** (uses unity's physics engine) component
@@ -238,27 +256,6 @@
 		- deactivate GameObjects when you don't need it for a while but will need it later
 - `Start()`
 	- called once in script's lifetime (before Update is called) => do setup/initialization
-```c#
-public class PlayerController : MonoBehaviour {
-    public float moveSpeed = 50.0f; //public variables are editable in Inspector
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-		//Time.deltaTime = amount of time since last Update call
-        Vector3 pos = transform.position; //gets position of current GameObject
-        pos.x += moveSpeed * Input.GetAxis("Horizontal") * Time.deltaTime; //Gets horizontal input, updates the position
-        pos.z += moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
-        transform.position = pos;
-    }
-}
-```
 - `Destroy()`
 	- called right before GameObject is destroyed => clean up (e.g. shut down network connections)
 ## Collision detection
@@ -594,7 +591,32 @@ public  class GameController : MonoBehaviour {
 	- Descriptive/Negative name = how the input will be read to the user
 	- Negative/Positive buttons = actual buttons/keys used for the input (e.g. +: right, -: left)
 	- Alt Negative/Positive buttons = alternative buttons (e.g. a, d)
+	- Gravity, Sensitivity determine how slippery the controls are
+		- sensitivity = responsiveness on key down to get to full value (0 to +/-1), 
+		- gravity = responsiveness on key up to return back to 0
 	- other fields mostly for functionality of analog sticks
+
+```c#
+public class PlayerController : MonoBehaviour {
+    public float moveSpeed = 50.0f; //public variables are editable in Inspector
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+		//Time.deltaTime = amount of time since last Update call
+        Vector3 pos = transform.position; //gets position of current GameObject
+        pos.x += moveSpeed * Input.GetAxis("Horizontal") * Time.deltaTime; //Gets horizontal input, updates the position
+        pos.z += moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
+        transform.position = pos;
+    }
+}
+```
 # Animation
 - Mecanim is Unity's animation system
 - Window → Animation → Animation (`Cmd + 6)` 
