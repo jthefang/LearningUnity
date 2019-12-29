@@ -1,6 +1,7 @@
 # Table of Contents
 - [Unity UI](#unity-ui)
 - [Assets](#assets)
+	- [Where to find resources](#resources)
 - [Materials](#materials)
 - [GameObjects](#gameobjects)
 	- [Prefabs](#prefab)
@@ -93,6 +94,11 @@
 	- Textures (`.psd`)
 - assets typically packaged into a **unity package**
 	- Assets --> Import package --> Custom package --> select the `.unity` file to import the assets package into unity
+## Resources
+- Music
+	- https://www.bensound.com/
+	- https://www.playonloop.com/
+	- http://dig.ccmixter.org/
 # Materials
 - Determine the look and feel of an object
 	- uses a **shader** (simple program written in C-like language for GPU rendering) to give texture
