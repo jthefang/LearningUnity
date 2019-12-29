@@ -97,8 +97,10 @@
 ## Resources
 - Music
 	- https://www.bensound.com/
-	- https://www.playonloop.com/
 	- http://dig.ccmixter.org/
+- Sound FX
+	- https://www.zapsplat.com/
+	- https://freesound.org/search/?q=bump
 # Materials
 - Determine the look and feel of an object
 	- uses a **shader** (simple program written in C-like language for GPU rendering) to give texture
