@@ -35,9 +35,11 @@
 - [Particle systems](#particle-systems)
 	- [Scripting](#scripting)
 - [UI](#ui)
+	- [Buttons](#buttons)
 	- [Hooking it up to a script](#hooking-it-up-to-a-script)
 	- [Add animations to buttons](#add-animations-to-buttons)
 	- [Creating a sliding menu](#creating-a-sliding-menu)
+- [Add 2D Lighting](#add-2d-lighting)
 # Unity UI
 - Hand tool - `Q`
 	- allows you to pan around the scene
@@ -906,7 +908,37 @@ public  class UIManager : MonoBehaviour {
 	- add a background image to this
 - Add buttons to panel content
 - Animate the panel content to slide in and out of the parent panel mask
-
+# Add 2D Lighting
+- [https://www.youtube.com/watch?v=nkgGyO9VG54](https://www.youtube.com/watch?v=nkgGyO9VG54)
+- Unity 2019.2 or later
+- Window --> Package manager --> Install Lightweight RP (render pipeline)
+- Project Settings --> Graphics --> see if you have an asset for Render Pipeline Asset
+	- if not: Project --> Create --> Rendering --> Lightweight Render Pipeline --> Pipeline Asset
+	- then drag this asset into the asset slot in the Project Settings
+- For 2D lights:
+	- Click the LWRP asset in the Project view --> Inspector --> General --> Renderer Type dropdown --> Custom
+	- Project --> Create --> Rendering/Lightweight Render Pipeline --> 2D Renderer --> drag this to the data slot for the LWRP asset under its Renderer Type field in the Inspector
+	- Change all sprites to use Sprite Renderer material: Sprite-Lit-Default
+		- do this in one shot by Edit --> Render Pipeline --> Lightweight Render Pipeline --> 2D Renderer --> Upgrade Scene (or Project) to 2D Renderer
+- Hierarchy -> Light -> 2D -> Pick light type
+	- Target Sorting Layers - set to "All" to light up all layers with this light
+	- Intensity - how bright the light is
+	- Color - the color of the light
+	- Fall off - how drastically light falls off over distance (create cool glow effect)
+	- Inner/Outer radius - center and radius of light
+- Point light - add light that emits from a point
+- Global light - lights up all elements in the scene uniformly
+- Sprite light - add a sprite that will determine shape of light
+- Free form light - create a shape that will be light
+- Script
+```c#
+using UnityEngine.Experimental.Rendering.LWRP;
+...
+	torch = transform.Find("PointLight").gameObject.GetComponent<Light2D>();
+	torch.intensity = lightIntensity;
+	torch.pointLightOuterRadius = torchRadius;
+	torch.color = Color.white;
+```
 
 
 
