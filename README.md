@@ -102,7 +102,9 @@
 	- http://dig.ccmixter.org/
 - Sound FX
 	- https://www.zapsplat.com/
-	- https://freesound.org/search/?q=bump
+	- https://freesound.org/
+- Colors
+	- http://streetcrossergame.com/
 # Materials
 - Determine the look and feel of an object
 	- uses a **shader** (simple program written in C-like language for GPU rendering) to give texture
