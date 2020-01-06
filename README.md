@@ -105,6 +105,8 @@
 	- https://freesound.org/
 - Colors
 	- http://streetcrossergame.com/
+- Art and sound, misc resources
+	- https://www.kenney.nl/
 # Materials
 - Determine the look and feel of an object
 	- uses a **shader** (simple program written in C-like language for GPU rendering) to give texture
