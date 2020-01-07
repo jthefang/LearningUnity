@@ -107,6 +107,10 @@
 	- http://streetcrossergame.com/
 - Art and sound, misc resources
 	- https://www.kenney.nl/
+- Game Dev Sites
+	- [Gamasutra](https://www.gamasutra.com/) for blogs and articles
+	- [Pixel Propspector](https://pixelprospector.com/)
+	- [TigSource](https://forums.tigsource.com/index.php)
 # Materials
 - Determine the look and feel of an object
 	- uses a **shader** (simple program written in C-like language for GPU rendering) to give texture
