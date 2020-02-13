@@ -2,7 +2,7 @@
 Events help decouple game logic from visual components. An event is published, and subscribers are notified.
 
 # Code
-```c
+```c#
 public class SampleClass : MonoBehaviour {
     public event EventHandler OnSpacePressed;
 
@@ -18,7 +18,8 @@ public class SampleClass : MonoBehaviour {
     void SomeMethod() { // Publisher
         //a trigger happens
         if (Input.GetKeyDown(KeyCode.Space)) {
-            /*if (OnSpacePressed != null) { //need this to check for subscribers (if no subscribers, null exception)
+            /*if (OnSpacePressed != null) {
+            //need this to check for subscribers (if no subscribers, null exception)
                 OnSpacePressed(this, EventArgs.Empty);
             } // equivalent to below */
             OnSpacePressed?.Invoke(this, EventArgs.Empty); 
@@ -57,7 +58,7 @@ public class SampleClass : MonoBehaviour {
 # Delegates
 Events work with delegates (just defines the event function signature). `EventHandler` is just a type of delegate. The default delegate is `Action`. You can also define your own delegate. 
 
-```c
+```c#
 public class SampleClass : MonoBehaviour {
     public event Action<bool, int> OnActionEvent; //you can define custom signature for subscriber
 
@@ -91,11 +92,12 @@ public class SampleClass : MonoBehaviour {
 # UnityEvent
 Just an event type that shows up in the Unity editor.
 
-```c
+```c#
 public class SampleClass : MonoBehaviour {
     public UnityEvent OnUnityEvent; 
     /**
-        On this object --> Inspector --> Script Component --> + subscriber object --> select the function to trigger on the subscriber (must have void signature in this case)
+        On this object --> Inspector --> Script Component --> + subscriber object 
+        --> select the function to trigger on the subscriber (must have void signature in this case)
     */
 
     void Start() {
