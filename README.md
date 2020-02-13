@@ -266,6 +266,11 @@
 # Scripts
 - script derives from class called `MonoBehaviour`
 - Public fields in scripts will be editable in the Unity Inspector
+	- You can make private fields **serializable** to have them also editable in the Inspector
+	```c
+	[SerializeField]
+	private int maxHeight = 3;
+	```
 - **Tag** a game object to reference it in your script, e.g. `player = GameObject.FindGameObjectWithTag("Player");`
 	- select GO --> Inspector --> Tag dropdown --> select tag (e.g. `Player`)
 - `Update()`
