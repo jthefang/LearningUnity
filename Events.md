@@ -59,6 +59,7 @@ public class SampleClass : MonoBehaviour {
 Events work with delegates (just defines the event function signature). `EventHandler` is just a type of delegate. The default delegate is `Action`. You can also define your own delegate. 
 
 ```c#
+using System; //for Action
 public class SampleClass : MonoBehaviour {
     public event Action<bool, int> OnActionEvent; //you can define custom signature for subscriber
 
