@@ -1,0 +1,60 @@
+# Particle systems
+- Unity uses **Shuriken** particle system to create effects like fire on torches, bomb explosion effects
+	- Particle system - emits particles in random positions within predefined space (e.g. a sphere, cone)
+	- Particles can have lifetimes after which they are destroyed
+- (maybe new) GameObject → Add component → Particle System
+	- Particle system component → Renderer section → Material → Default-Particle 
+- Particle system component is made of several modules / subsections
+- Main module
+	- Duration - length of time in seconds for particle system to run (short for explosion, long for fire)
+	- Looping - repeatedly emit particles until particle system stops (restarts once duration time is reached) 
+	- Prewarm - used when looping enabled, particle system will act as it it's already completed a full cycle on start up (i.e. fill the whole space with particles)
+	- Start delay - delay in seconds before particle system starts emitting
+	- Start lifetime - initial lifetime in seconds for particles (particles destroyed after this elapsed time)
+		- i.e. controls height of flame
+	- Start speed - initial speed of particles, greater speed = more spread out/less dense
+	- Start size - size of the particles
+	- Start rotation - matters if the particles have a distinct shape that changes with rotation
+	- Gravity modifier - 0 => gravity will be turned off for the particles (1 = gravity full on)
+	- Simulation space - if the particle system moves
+		- Local space - particles move together as a unit (if the particle system itself is moved)
+		- World space - particles move freely once emitted
+	- Play on awake: if disabled => have to manually start particle system via script/animation system
+	- Max particles - for performance reasons
+- **Emission module** - controls number and timing of emitted particles (continuous flow, sudden burst of particles, etc)
+	- Rate over time = # particles / second
+		- Set to 0 for a burst of particles (explosion effect)
+	- Bursts list - collection of particles emitted all at once at a particular point in time
+		- e.g. time = 0.0, particles = 150 will emit 150 particles all at once at start of the system
+- Renderer module
+	- **Material** - by far the most influential visually; this changes the look of your particles (e.g. how you create a red orange flame)
+- Shape
+	- Cone
+		- Angle determines the cone spread 
+		- Radius = how wide the base of the cone is 
+	- Can add custom shapes via meshes too
+- Size over lifetime
+	- Click size box => bottom right curves chart shows x: lifetime of particle, y: particle size
+		- Double click to add keys to the graph, right click to remove keys; this changes the shape of the graph
+	- There are preset size curves at the bottom of the graph
+		- e.g. fire has particles that decrease linearly in size over time
+- Color over lifetime
+	- Click color box
+	- 4 markers, top = alpha/opacity, bottom = RGB values, from start (far left) transitioning to end opacity/color at end (far right)
+		- Click the top or bottom bars to add markers, drag marker off bar to delete
+	- e.g. to have particles fade away over time => click top right marker and set alpha to 0
+# Scripting
+- You can have particles emit on certain actions => have script accept a prefab with a particle system
+# 2D Particles
+- Make a particle 2D sprite in Photoshop
+- Add Particle System component to your sprite
+    - Renderer -> Material -> Sprite Default
+        - Render Mode -> Stretched Billboard to have the particle sprites orient outwards
+        - Don't forget to change the sorting layer!
+    - Texture Sheet Animation -> Mode: Sprites -> Choose particle sprite 
+    - General
+        - Color: random between 2 constants 
+        - Simulation space: 
+            - `World Space` to make the particles NOT move with the emitter
+    - Shape
+        - Edge to be a flat drop
