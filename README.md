@@ -32,14 +32,11 @@
 	- [Animation events](#animation-events)
 - [Audio](#audio)
 	- [Random pitch](#random-pitch)
-- [Particle systems](#particle-systems)
-	- [Scripting](#scripting)
 - [UI](#ui)
 	- [Buttons](#buttons)
 	- [Hooking it up to a script](#hooking-it-up-to-a-script)
 	- [Add animations to buttons](#add-animations-to-buttons)
 	- [Creating a sliding menu](#creating-a-sliding-menu)
-- [Add 2D Lighting](#add-2d-lighting)
 # Unity UI
 - Hand tool - `Q`
 	- allows you to pan around the scene
@@ -111,6 +108,8 @@
 	- [Gamasutra](https://www.gamasutra.com/) for blogs and articles
 	- [Pixel Propspector](https://pixelprospector.com/)
 	- [TigSource](https://forums.tigsource.com/index.php)
+- Make audio seamlessly loop in Audacity:	
+	- [Video](https://www.youtube.com/watch?v=hiwC05zMaFw)
 # Materials
 - Determine the look and feel of an object
 	- uses a **shader** (simple program written in C-like language for GPU rendering) to give texture
@@ -761,53 +760,6 @@ void OnCollisionEnter(Collision col)
 ## Random pitch
 `audioSource.pitch = Random.Range(0.8f, 1.5f);`
 - Gives more spontaneity to your sounds (e.g. individualistic sheep sounds)
-# Particle systems
-- Unity uses **Shuriken** particle system to create effects like fire on torches, bomb explosion effects
-	- Particle system - emits particles in random positions within predefined space (e.g. a sphere, cone)
-	- Particles can have lifetimes after which they are destroyed
-- (maybe new) GameObject → Add component → Particle System
-	- Particle system component → Renderer section → Material → Default-Particle 
-- Particle system component is made of several modules / subsections
-- Main module
-	- Duration - length of time in seconds for particle system to run (short for explosion, long for fire)
-	- Looping - repeatedly emit particles until particle system stops (restarts once duration time is reached) 
-	- Prewarm - used when looping enabled, particle system will act as it it's already completed a full cycle on start up (i.e. fill the whole space with particles)
-	- Start delay - delay in seconds before particle system starts emitting
-	- Start lifetime - initial lifetime in seconds for particles (particles destroyed after this elapsed time)
-		- i.e. controls height of flame
-	- Start speed - initial speed of particles, greater speed = more spread out/less dense
-	- Start size - size of the particles
-	- Start rotation - matters if the particles have a distinct shape that changes with rotation
-	- Gravity modifier - 0 => gravity will be turned off for the particles (1 = gravity full on)
-	- Simulation space - if the particle system moves
-		- Local space - particles move together as a unit (if the particle system itself is moved)
-		- World space - particles move freely once emitted
-	- Play on awake: if disabled => have to manually start particle system via script/animation system
-	- Max particles - for performance reasons
-- **Emission module** - controls number and timing of emitted particles (continuous flow, sudden burst of particles, etc)
-	- Rate over time = # particles / second
-		- Set to 0 for a burst of particles (explosion effect)
-	- Bursts list - collection of particles emitted all at once at a particular point in time
-		- e.g. time = 0.0, particles = 150 will emit 150 particles all at once at start of the system
-- Renderer module
-	- **Material** - by far the most influential visually; this changes the look of your particles (e.g. how you create a red orange flame)
-- Shape
-	- Cone
-		- Angle determines the cone spread 
-		- Radius = how wide the base of the cone is 
-	- Can add custom shapes via meshes too
-- Size over lifetime
-	- Click size box => bottom right curves chart shows x: lifetime of particle, y: particle size
-		- Double click to add keys to the graph, right click to remove keys; this changes the shape of the graph
-	- There are preset size curves at the bottom of the graph
-		- e.g. fire has particles that decrease linearly in size over time
-- Color over lifetime
-	- Click color box
-	- 4 markers, top = alpha/opacity, bottom = RGB values, from start (far left) transitioning to end opacity/color at end (far right)
-		- Click the top or bottom bars to add markers, drag marker off bar to delete
-	- e.g. to have particles fade away over time => click top right marker and set alpha to 0
-## Scripting
-- You can have particles emit on certain actions => have script accept a prefab with a particle system
 # UI
 - UI is added as a scene (put in Scenes folder)
 	- nice to also have a UI folder in Assets with subfolders for Fonts, Menu (background images, buttons, icons and game art)
@@ -921,37 +873,6 @@ public  class UIManager : MonoBehaviour {
 	- add a background image to this
 - Add buttons to panel content
 - Animate the panel content to slide in and out of the parent panel mask
-# Add 2D Lighting
-- [https://www.youtube.com/watch?v=nkgGyO9VG54](https://www.youtube.com/watch?v=nkgGyO9VG54)
-- Unity 2019.2 or later
-- Window --> Package manager --> Install Lightweight RP (render pipeline)
-- Project Settings --> Graphics --> see if you have an asset for Render Pipeline Asset
-	- if not: Project --> Create --> Rendering --> Lightweight Render Pipeline --> Pipeline Asset
-	- then drag this asset into the asset slot in the Project Settings
-- For 2D lights:
-	- Click the LWRP asset in the Project view --> Inspector --> General --> Renderer Type dropdown --> Custom
-	- Project --> Create --> Rendering/Lightweight Render Pipeline --> 2D Renderer --> drag this to the data slot for the LWRP asset under its Renderer Type field in the Inspector
-	- Change all sprites to use Sprite Renderer material: Sprite-Lit-Default
-		- do this in one shot by Edit --> Render Pipeline --> Lightweight Render Pipeline --> 2D Renderer --> Upgrade Scene (or Project) to 2D Renderer
-- Hierarchy -> Light -> 2D -> Pick light type
-	- Target Sorting Layers - set to "All" to light up all layers with this light
-	- Intensity - how bright the light is
-	- Color - the color of the light
-	- Fall off - how drastically light falls off over distance (create cool glow effect)
-	- Inner/Outer radius - center and radius of light
-- Point light - add light that emits from a point
-- Global light - lights up all elements in the scene uniformly
-- Sprite light - add a sprite that will determine shape of light
-- Free form light - create a shape that will be light
-- Script
-```c#
-using UnityEngine.Experimental.Rendering.LWRP;
-...
-	torch = transform.Find("PointLight").gameObject.GetComponent<Light2D>();
-	torch.intensity = lightIntensity;
-	torch.pointLightOuterRadius = torchRadius;
-	torch.color = Color.white;
-```
 
 
 
