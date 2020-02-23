@@ -33,7 +33,9 @@ public interface IBird { //IBird.cs
     float MaxHeight { get; }
     float MinWeight { get; }
 }
+```
 
+```c#
 public class BirdSplit : MonoBehaviour, IBird { //BirdSplit.cs
     private BirdController _birdController;
 
@@ -52,7 +54,9 @@ public class BirdSplit : MonoBehaviour, IBird { //BirdSplit.cs
         _birdController.Move(vertical);
     }
 }
+```
 
+```c#
 public class BirdController { //BirdController.cs
     //this code is testable!
     private IBird _bird;
@@ -70,13 +74,17 @@ public class BirdController { //BirdController.cs
         }
     }
 }
+```
 
+```c#
 public class MockBird : IBird {
     public Vector3 Position { get; set; } 
     public float MaxHeight { get; }
     public float MinWeight { get; }
 }
+```
 
+```c#
 using NUnit.Framework;
 public class BirdTests { //BirdTests.cs (should be in an Editor/ folder)
     [Test]

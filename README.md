@@ -179,6 +179,8 @@
 #### RigidBody 
 - if you want the GameObject to be able to have collisions with other objects
 - uncheck gravity if you don't want to apply gravity
+	- OR set `Gravity Scale` to 0
+- Constraints --> `Freeze Rotation Z` for 2D games
 - check **is kinematic** if the **object will be controlled manually** (rather than just letting the physics engine control it) and you want to **register collisions** (be notified)
 	- uncheck kinematic if the object will be given velocity and not controlled (e.g. a bullet)
 - **Drag** - friction
