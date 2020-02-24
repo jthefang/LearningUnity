@@ -766,6 +766,9 @@ void OnCollisionEnter(Collision col)
 - UI is added as a scene (put in Scenes folder)
 	- nice to also have a UI folder in Assets with subfolders for Fonts, Menu (background images, buttons, icons and game art)
 	- you want UI assets to have Inspector -> Texture Type = **Sprite (2D and UI)**
+- To have the UI scale with screens size:
+	- Canvas GO -> Canvas Scaler component (Inspector) -> **UI Scale Mode**: Scale with screen size 
+	- [Link](https://answers.unity.com/questions/1040610/re-sizing-ui-text-font-relative-to-screen-size.html)
 - Creating an element: GameObject -> UI -> Image
 	- will create an Image GameObject as child of a Canvas object
 	- **Canvas** - root object for all UI elements
