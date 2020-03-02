@@ -1,3 +1,106 @@
+# Delegates
+A way to store functions in variables and pass them around in C#. Delegates declare function signature without defining the implementation.
+
+```c#
+public class Testing : MonoBehaviour {
+    public delegate void TestDelegate(); //return type is void, no parameters to the delegate function
+    public delegate vool TestBoolDelegate(int i);
+
+    private TestDelegate testDelegateFunction; //can be assigned to any function that matches the signature of TestDelegate (i.e. void return and no parameters)
+    private TestBoolDelegate testBoolDelegateFunction;
+
+    /*
+        Last type is always the return type (e.g. bool for these examples below)
+    */
+    private Func<bool> testFunc;
+    private Func<int, bool>  testIntBoolFunc; //int parameter, bool return type
+
+    void Start() {
+        /* 
+        Also:
+        testDelegateFunction = new TestDelegate(MyTestDelegateFunction);
+
+        testDelegateFunction = delegate() { Debug.Log("Anonymous method"); };
+
+        Lambda expression:
+        testDelegateFucntion = () => { Debug.Log("Anonymous method"); };
+        */
+        testDelegateFunction = MyTestDelegateFunction;
+        /*
+        * delegates can be multi cast (i.e. calling the delegate triggers multiple functions)
+        * -= to remove functions
+        * can't do this with lambda expressions
+        */
+        testDelegateFunction += MySecondDelegateFunction; 
+        
+        testDelegateFunction(); //logs "Hello" then logs "World"
+
+        testBoolDelegateFunction = MyTestBoolDelegateFunction;
+        /* 
+        Lambda expression:
+        testBoolDelegateFunction = (int i) => i < 5;
+        testBoolDelegateFunction = (int i) => {
+            ...some more code up here
+            return i < 5; 
+        };
+        */
+        Debug.Log(testBoolDelegateFunction(1));
+
+        testFunc = () => false;
+        testIntBoolFunc = (int i) => i < 5;
+    }
+
+    private void MyTestDelegateFunction() {
+        Debug.Log("Hello");
+    }
+
+    private void MySecondDelegateFunction() {
+        Debug.Log("World");
+    }
+
+    private bool MyTestBoolDelegateFunction(int i) {
+        return i < 5;
+    }
+
+}
+```
+
+## Example: Timer countdown trigger
+```c#
+public class ActionOnTimer : MonoBehaviour {
+    private Action timerCallback;
+    private float timer;
+
+    public void SetTimer(float timer, Action timerCallback) {
+        this.timer = timer;
+        this.timerCallback = timerCallback;
+    }
+
+    void Update() {
+        if (timer > 0f) {
+            timer -= Time.deltaTime;
+
+            if (IsTimerComplete()) {
+                timerCallback;
+            }
+        }
+    }
+
+    public bool IsTimerComplete() {
+        return timer <= 0f;
+    }
+}
+
+public class Testing : MonoBehaviour {
+    [SerializeField]
+    ActionOnTimer actionOnTimer;
+
+    void Start() {
+        acitonOnTimer.SetTimer(1f, () => { Debug.Log("Timer complete!"); });
+    }
+}
+```
+
 # What are events?
 Events help decouple game logic from visual components. An event is published, and subscribers are notified.
 
@@ -55,13 +158,14 @@ public class SampleClass : MonoBehaviour {
 }
 ```
 
-# Delegates
+# Events and Delegates
 Events work with delegates (just defines the event function signature). `EventHandler` is just a type of delegate. The default delegate is `Action`. You can also define your own delegate. 
 
 ```c#
 using System; //for Action
 public class SampleClass : MonoBehaviour {
     public event Action<bool, int> OnActionEvent; //you can define custom signature for subscriber
+    //Action by itself is void return type and no params
 
     //own delegate
     public event TestEventDelegate OnFloatEvent;

@@ -1,3 +1,4 @@
+# Getters and Setters
 ```c#
 public string Username { get; set; } //normal way of get/setters
 
@@ -15,4 +16,13 @@ public string Password
         _password = Infrastructure.Encryption.SHA256(value);                
     }
 }
+```
+
+# String formatting
+
+## Numbers
+```c#
+float num = 1000000.35;
+Debug.Log(num.ToString("n2")); //prints 1,000,000.35
+Debug.Log(num.ToString("n0")); //prints 1,000,000
 ```
