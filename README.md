@@ -110,6 +110,8 @@
 	- [TigSource](https://forums.tigsource.com/index.php)
 - Make audio seamlessly loop in Audacity:	
 	- [Video](https://www.youtube.com/watch?v=hiwC05zMaFw)
+- Pixel sprites:
+	- https://www.spriters-resource.com/
 # Materials
 - Determine the look and feel of an object
 	- uses a **shader** (simple program written in C-like language for GPU rendering) to give texture
