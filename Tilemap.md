@@ -33,8 +33,7 @@ Following this [blog](https://blogs.unity3d.com/2019/03/18/isometric-2d-environm
     - A general rule based on your initial asset dimensions: 1. Take a look at the resolution of your tiles. Typically, isometric tiles that are represented as a block are taller than they are wide; ‘flat’ tiles (ones that appear as a plane rather than a cube) are wider than they are tall. However, the width will always be the same between them. Therefore, **if you want your tiles to take up exactly one Unity unit, set the Pixels Per Unit value in the tile import settings equal to their width in pixels**. You may want to adjust this value in some cases – usually by decreasing it (or increasing the actual resolution of your assets); this could be useful if you are trying to produce an effect where some tiles appear to take up more than one grid cell and overlay the neighboring tiles.
     - **For the correct Y grid value for the tiles, take the height of the base (or cap) of a single tile, and divide it by the width. This will give you a Y value relative to the X, provided that X is 1**
         - e.g. Tiles with a base height of 32 pixels, and width of 64 pixels => use grid size: X = 1, Y = 0.5.
-    ![tilemap dimensions][tilemap_dims]
-    [tilemap_dims]: images/Tilemap/tile_dimensions.png
+![tilemap dimensions](images/Tilemap/tile_dimensions.png)
 
 ### Basic workflow
 - Organize your Tilemap assets like:
