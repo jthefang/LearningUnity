@@ -14,7 +14,6 @@
 - [Hierarchy](#hierarchy)
 - [Sprites](#sprites)
 	- [Sprite Layers](#sprite-layers)
-	- [Tilemap](#tilemap)
 - [Game Physics](#game-physics)
 - [Scripts](#scripts)
 	- [Collision detection](#collision-detection)
@@ -185,6 +184,7 @@
 - Constraints --> `Freeze Rotation Z` for 2D games
 - check **is kinematic** if the **object will be controlled manually** (i.e. you're updating the object's `transform` directly, rather than just letting the physics engine move it via forces, velocity and what-not) and you want to **register collisions** (be notified)
 	- uncheck kinematic if the object will be given velocity and not controlled (e.g. a bullet)
+	- **Interpolate** to have the object move smoothly
 - **Drag** - friction
 - **Angular drag** - damping/friction when rotating
 - **Freeze position** - disallows GameObject movement along the checked axes, e.g. checking Y means the GameObject can't move up/down
@@ -237,23 +237,6 @@
 	- default is 0 => for overlapping sprites give them an ordering so that the unity engine consistently renders them in the right layer ordering (else they'll flicker overlap each other)
 - Layers dropdown (top right) --> Edit Layers --> Sorting layers --> click to add layers (top layers are rendered first/below the subsequent layers)
 	- GO --> Inspector --> Sprite Renderer --> Sorting Layer dropdown, select which layer this object should belong to
-## TileMap
-- 2DObject --> TileMap
-- Import photoshop file
-	- sprite mode: multiple
-	- pixels per unit: 32 (or whatever)
-	- filter mode: Point 
-	- compression: none
-	- Sprite editor to slice tiles
-- Tilemap object (child of Grid) = a layer 
-- Window --> 2D --> Tile Palette
-	- Create new Palette (save in Assets/Palettes)
-	- Drag sprite sheet over to the Tile Palette area, save tiles in Assets/Tiles/[what ever these tiles are]
-	- Use Active Tilemap dropdown to select which tilemap layer to draw tiles onto
-	- use brush tool (B) in Tile Palette, select tile(s) you want to paint onto the grid
-	- Select tool to select tiles, move tool to move selected tiles
-- Edit --> Project Settings --> Quality --> Disable anti aliasing to remove blurred edges/lines between your tiles
-- Check end of Brackeys video for **animated tiles** and **rule based tiles** (have tile map auto detect which tiles should be placed based off neighboring tiles, e.g. like road building): [https://www.youtube.com/watch?v=ryISV_nH8qw](https://www.youtube.com/watch?v=ryISV_nH8qw)
 # Game Physics
 - Edit --> Project Settings --> Project 2D --> gravity Y (set negative value for real gravity)
 - Every object that should interact with gravity and other physics objects should have a **Collider 2D** (for collision detection) and **Rigidbody 2D** (uses unity's physics engine) component
