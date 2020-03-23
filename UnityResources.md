@@ -1,6 +1,6 @@
 - `Timeline` for game Tutorials
-- Cinemachine for camera work
-- UI builder for UIs
+- Cinemachine for camera work (https://www.youtube.com/watch?v=Ml8ptNeezsU)
+- UI builder for UIs ()
 - TextMeshPro over regular Texts
 
 # Unity's blog for tutorials and info about new features
