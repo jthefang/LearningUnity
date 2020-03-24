@@ -98,34 +98,12 @@ public class GameManager : MonoBehaviour, ILoadableScript, IDependentScript
     GameSettings gameSettings;
     #endregion
 
-    [SerializeField]
-    private AudioClip gameStartSound;
-    [SerializeField]
-    private AudioClip gameOverSound;
-    private AudioSource audioSource;
-
     ScoreManager scoreManager;
     ObjectPooler objectPooler;
-    [SerializeField]
-    DroneManager droneManager;
-    [SerializeField]
-    GateManager gateManager;
 
     public GameObject playerPrefab;
     private Player player;
     public event Action<Player> OnNewPlayer;
-
-    [SerializeField]
-    protected GameObject Bounds;
-    /**
-        The game bounds go from top left: -bounds.x, -bounds.y 
-            -> bot right: +bounds.x, +bounds.y
-    */
-    public Vector3 GameBounds {
-        get {
-            return Bounds.GetComponent<SpriteRenderer>().bounds.extents;
-        }
-    }
 
     #region ILoadableScript
     public event Action<ILoadableScript> OnScriptInitialized;
@@ -154,8 +132,6 @@ public class GameManager : MonoBehaviour, ILoadableScript, IDependentScript
         scoreManager.OnScoreChange += OnScoreChange;
 
         gameSettings = GameSettings.Instance;
-
-        audioSource = gameObject.GetComponent<AudioSource>();
         
         OnGameStateChange += OnGameStateChangeHandler;
         OnGameStart += OnGameStartHandler;
