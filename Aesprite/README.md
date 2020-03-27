@@ -1,5 +1,6 @@
 Based off this video (https://www.youtube.com/watch?v=Md6W79jtLJM)
 
+# Basic tools
 - Pen tool `B`: basic drawing tool
     - Left click will place down foreground color
     - Right click will place down background color (= an erase as long as background color (bottom right) is set to `Mask`)
@@ -66,9 +67,9 @@ Based off this video (https://www.youtube.com/watch?v=Md6W79jtLJM)
     - create palette from current sprite
 
 # Canvas
-    - To pan around
-        - middle mouse click + drag
-        - hold `Space` + left click + drag 
-    - Hold `Space`
-        - top bar: `100%`, `Center (canvas)`, `Fit (canvas to) screen`
-    - Zoom with mouse wheel
+- To pan around
+    - middle mouse click + drag
+    - hold `Space` + left click + drag 
+- Hold `Space`
+    - top bar: `100%`, `Center (canvas)`, `Fit (canvas to) screen`
+- Zoom with mouse wheel
