@@ -73,3 +73,4 @@ Based off this video (https://www.youtube.com/watch?v=Md6W79jtLJM)
 - Hold `Space`
     - top bar: `100%`, `Center (canvas)`, `Fit (canvas to) screen`
 - Zoom with mouse wheel
+- Hold `Cmd` to display margins from pixels to edge of canvas
