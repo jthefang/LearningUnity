@@ -22,9 +22,8 @@
     - Duplicate Cells `Alt` + `D`
     - Remove Frame `Alt` + `C`
 - Tagging frames
-    - Select frames in timeline > Right click > Tag > name the frames (e.g. `running`)
-    
-[timeline tagging](../images/Aesprite/timeline_tags.png)
+    - Select frames in timeline > Right click > Tag > name the frames (e.g. `running`)   
+![timeline tagging](../images/Aesprite/timeline_tags.png)
 - Bottom right 1:1 launches preview window 
     - can play animation in the preview window to see changes 
     - right click play in preview window for speed and other options
