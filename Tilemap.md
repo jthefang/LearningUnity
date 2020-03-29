@@ -20,13 +20,13 @@ Following this [blog](https://blogs.unity3d.com/2019/03/18/isometric-2d-environm
 - [Starter pack ($25)](https://assetstore.unity.com/packages/2d/environments/2d-isometric-tile-starter-pack-27944?_ga=2.84095065.1773159753.1584750701-1431738031.1576306455)
 
 ### Creating Tilemap
-- Hierarchy -> 2D Object -> Select Tilemap type
+- **Hierarchy -> 2D Object -> Select Tilemap type**
 - Grid = the ‘easel’ that holds your Tilemap Game Objects 
 - Tilemap = canvases that you will be painting your tiles onto
     - => also need a brush and a palette
     - Tile Palette is what holds your tile assets => can pick them with the brush tool and start painting
-- Window > 2D > Tile Palette
-    - Top left dropdown > `Create New Palette` 
+- **Window > 2D > Tile Palette**
+    - **Top left dropdown > `Create New Palette`**
     - Set the grid type to your use case (e.g. `Isometric` in this case)
     - Set the palette cell size to Manual to be able to customize the dimensions of your isometric tiles. 
         - In this case, I know that the dimensions of my tiles correspond to a grid of 1 in X and 0.5 in Y; however, for your use case, it will depend on the resolution, pixels per unit values selected at import and dimensions of the assets – essentially, on the isometric angle at which the tiles are rotated.
@@ -44,7 +44,7 @@ Following this [blog](https://blogs.unity3d.com/2019/03/18/isometric-2d-environm
             - RuleTiles
             - **Sprites**
             - **Tiles**
-- To add tiles to our palette: drag tile sprites over into the Tile Palette window
+- **To add tiles to our palette: drag tile sprites over into the Tile Palette window**
     - This creates a Tile Asset, containing info about the tile itself (e.g. the sprite(s) that it is using, a tint color, and the type of collider it generates)
     - For detailed info about a tile on the palette, choose the Select (S) tool at the top of the Tile Palette window and click on that tile => can see which Tile asset it is referencing in the Inspector
     - **To paint the Tile** onto our Tilemap, select the Brush (B) tool, and click the Tile in the Palette. You will now be able to paint with the selected Tile in the scene view. Some other painting tools include the Eraser (D), Box Fill (U), Flood Fill (G), and the Tile Picker (I).
@@ -55,9 +55,9 @@ Following this [blog](https://blogs.unity3d.com/2019/03/18/isometric-2d-environm
 ### Adding props or elevated areas (separate Tilemaps on the same grid)
 - Use more than one Tilemap on the same Grid to add prop objects to the level that also align with the grid OR to add tiles that appear to be higher than the first layer.
 - To attach another Tilemap to the grid: right-click on the Grid Game Object > create new Tilemap of the corresponding type
-- In order to switch to painting on the new Tilemap, go back to the Tile Palette window, and **change the Active Tilemap just below the main toolbar**.
+- In order to switch to painting on the new Tilemap, go back to the Tile Palette window, and *change the Active Tilemap just below the main toolbar*.
 - Adding elevation 
-    - For normal Isometric Tilemaps, you can simply create a new Tilemap under the same Grid; and **give it a higher Order in Layer value** => change the Tile Anchor setting to make the new layer anchor to a higher point on the grid
+    - For normal Isometric Tilemaps, you can simply create a new Tilemap under the same Grid; and *give it a higher Order in Layer value* => change the Tile Anchor setting to make the new layer anchor to a higher point on the grid
         - e.g. ground-level Tilemap had a Tile Anchor of (0, 0) for X and Y respectively
         - => new layer painted one unit higher will have it's Tilemap anchor point set to (1, 1) and an `Order in Layer` of 1 (one unit higher than base level)
         - => change active Tilemap to the one with the second height level and paint away
