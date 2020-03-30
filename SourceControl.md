@@ -1,7 +1,11 @@
 - Unity > Project Settings > Editor 
     - Version Control > Mode: `Visibile Meta Files`
     - Asset Serialization > `Force Text` (readable asset files)
-
+- Create new GitHub repo > in root project folder:
+    - `git init`
+    - `git remote add origin git@github.com:jthefang/[remote repo name].git`
+    - add, commit, push
+    
 ```gitignore
 # This .gitignore file should be placed at the root of your Unity project directory (e.g. on the same level as Assets/, Packages/ and ProjectSettings/)
 #
