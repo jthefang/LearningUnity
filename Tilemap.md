@@ -1,3 +1,11 @@
+# Splitting sprite into multiple tiles
+- Select sprite in Project > Inspector
+- `Sprite Mode`: `Multiple`
+- Set appropriate `Pixels per unit` (e.g. 32)
+- Sprite Editor >
+    - Slice > Pixel size (e.g. `32 x 32`)
+    - Apply
+
 # Unity tutorial
 Following this [blog](https://blogs.unity3d.com/2019/03/18/isometric-2d-environments-with-tilemap/?utm_source=youtube&utm_medium=social&utm_campaign=engine-global-generalpromo-2019-03-18&utm_content=video_learn-isometric)
 
