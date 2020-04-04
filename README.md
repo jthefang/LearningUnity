@@ -28,6 +28,7 @@
 	- [Hooking it up to a script](#hooking-it-up-to-a-script)
 	- [Add animations to buttons](#add-animations-to-buttons)
 	- [Creating a sliding menu](#creating-a-sliding-menu)
+	- [Adding a video](#adding-a-video)
 # Unity UI
 - Hand tool - `Q`
 	- allows you to pan around the scene
@@ -764,8 +765,13 @@ public  class UIManager : MonoBehaviour {
 	- add a background image to this
 - Add buttons to panel content
 - Animate the panel content to slide in and out of the parent panel mask
-
-
+## Adding a video
+- Create a UI > Raw image
+	- Add component `Video Player`
+- Assets > Create > Custom Render Texture > name it `<video name>_Texture`
+	- Change the size of this texture to match the dimensions of your video (e.g. `600x400`)
+		- And change the `Filter mode` to `Trilinear` for the best quality video
+	- Drag this texture into the `Texture` field of the `Raw Image` component and the `Target Texture` field of the `Video Player` component on the Raw Image GameObject
 
 
 

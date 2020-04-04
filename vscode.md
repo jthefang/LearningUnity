@@ -11,3 +11,6 @@
 - `Shift + Cmd + E` to open explorer (left bar)
     - `Cmd + B` to close left bar
 - `killall Dock` from the command line to restart the Mac dock (VSCode icon is too small bug)
+
+- `Cmd` + `L` to select a line
+- `Shift` + `Alt` + `Down` to copy line down
