@@ -5,6 +5,7 @@ https://www.youtube.com/watch?v=t4tfgI1XvGs&t=1410s
     - XML (`.uxml`) to define visual elements
         - base class is `VisualElement`
     - CSharp
+![UI Elements API](images/UI/api.png)
 
 # UIBuilder
 - A package you install from Package Manager
