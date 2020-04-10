@@ -1,0 +1,63 @@
+https://www.youtube.com/watch?v=t4tfgI1XvGs&t=1410s
+
+- UIElements API
+    - Stylesheet (`.uss`, standard subset of CSS) 
+    - XML (`.uxml`) to define visual elements
+        - base class is `VisualElement`
+    - CSharp
+
+# UIBuilder
+- A package you install from Package Manager
+- Explore window
+    - lists element selectors (using class names like `.class_name`)
+    - can select a selector to inspect the USS properties 
+- Hierarchy gives XML elements
+- Library window 
+    - lists standard UI elements
+    - `VisualElement` is your standard element (like a `div` container in HTML)
+- Project window 
+    - lists XML files in the projects
+- Canvas window
+    - size of the window is only for preview purposes
+    - you can resize the canvas with no effect on your actual UI
+    - You can change the UI theme from `Default` to `Light`, `Dark` or `Runtime Theme` via the dropdown above the UI Builder canvas window
+    - Change background of canvas window:
+        - Click on `Hierarchy` > `Canvas background` > `Camera` for a live camera feed of your play mode camera
+        - You can also set the background to an image (useful if you have a mock UI image you want to copy)
+    - Click `Preview` (top right) to interact with UI elements in the canvas directly
+- Workflow
+    - drag elements from the Library into the canvas
+    - updates and saves to a canvas will update the corresponding XML and USS files 
+    - any changes you make in UI Builder can be previewed live in Play mode (and will persist after you leave Play mode!)
+- To render your UI
+    - similar to `Canvas`s, we have UI `Panel` with a `Panel Renderer` component
+    - assign a `UXML` file to this `Panel Renderer` component to populate the root of this UI
+    - the `Event System` component is how you hook up events to your UI (e.g. button clicks)
+- Anchoring
+    - UI elements default uses flex box layout system (similar to web layouting)
+    - can switch element to `Absolute` (Inspector > Position > Position=`Absolute`)
+    - anchor is default to `top` and `left` (which means this UI element's position is defined via it's current position from the top and left of the screen in the UI builder)
+        - can add anchors for `right` and `bottom` (in Position component as well)
+- `Flex` 
+    - `Grow` means have this UI element take up all space in its parent element
+    - `Orientation` changes orientation layout of children elements
+- `Align`
+    - `Justify Content` how to space out children elements 
+- You can name your UI elements directly in the Explorer window
+    - Unity will use this name to register callback events (e.g. for buttons)
+- To save the styling for a UI element as a USS:
+    - Click on element in Explorer > Inspector > StyleSheet > Style Class List 
+    - Come up with a new class name in this text field > `Extract inline styles to new class`
+    - the class name will appear on the UI Element under this component 
+    - just add this class to other UI Elements to apply the same style settings
+- To modify a class style rule:
+    - Explorer > Stylesheet > Select a style selector > Inspector > modify the style (e.g. margin or some other overrideable property)
+- To preview the XML and USS, drag upwards the preview window from bottom of canvas window 
+- To add `hover` and `active` styles to buttons:
+    - Explorer > Stylesheet > `Add new selector` > use the same selector as the buttons have > dropdown: `Hover` or `Active` state 
+    - e.g. change the border color on hover, background color on active
+- Open `UIElements Debugger` to inspect UI elements in Play mode
+    - `Pick Element` => click an UI element in the Play mode game window or in the UI Builder window
+    - this is like the Chrome element inspector
+- StatsBox
+- ListView (https://youtu.be/t4tfgI1XvGs?t=1552)
