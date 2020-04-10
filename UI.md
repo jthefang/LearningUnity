@@ -8,7 +8,18 @@ https://www.youtube.com/watch?v=t4tfgI1XvGs&t=1410s
 ![UI Elements API](images/UI/api.png)
 
 # UIBuilder
-- A package you install from Package Manager
+- Install from Package Manager
+    - Package Manager > tick `Show preview packages` from the dropdown
+    - Download `UI Builder`
+    - Download `UI Runtime` from https://unity.bintray.com/unity/com.unity.ui.runtime/-/
+        - Package Manager > Add package from disk > Select the `package.json` file from within the packaage
+- Setup
+    - Empty container GameObject `UI`
+        - Children `Screen` GameObjects (which will actually render the XML UI files)
+        - Add `Panel Renderer` component (from UI Runtime package) to these children GameObjects
+        - Select a UXML file asset for the `Panel Renderer` to render (can just use one of the demo ones)
+            - Play to see the UI show up
+![Hierarchy setup](images/UI/setup_hierarchy.png) 
 - Explore window
     - lists element selectors (using class names like `.class_name`)
     - can select a selector to inspect the USS properties 
@@ -26,8 +37,14 @@ https://www.youtube.com/watch?v=t4tfgI1XvGs&t=1410s
         - Click on `Hierarchy` > `Canvas background` > `Camera` for a live camera feed of your play mode camera
         - You can also set the background to an image (useful if you have a mock UI image you want to copy)
     - Click `Preview` (top right) to interact with UI elements in the canvas directly
+- Inspector Window
+    - Component for the XML element's attributes
+    - Stylesheet component (for applying selectors, adding/removing class names)
+    - Inline style component
+        - styles that only apply to this element
 - Workflow
     - drag elements from the Library into the canvas
+    - Canvas > File dropdown > Save XML and USS
     - updates and saves to a canvas will update the corresponding XML and USS files 
     - any changes you make in UI Builder can be previewed live in Play mode (and will persist after you leave Play mode!)
 - To render your UI
