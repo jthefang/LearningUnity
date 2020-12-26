@@ -1,23 +1,15 @@
 # Table of Contents
+- [Table of Contents](#table-of-contents)
 - [Unity UI](#unity-ui)
 - [Assets](#assets)
-	- [Where to find resources](#resources)
+	- [Resources](#resources)
 - [Materials](#materials)
 - [GameObjects](#gameobjects)
-	- [Prefabs](#prefab)
+	- [Prefab](#prefab)
 	- [Camera object](#camera-object)
-	- [Components](#adding-components)
-		- [Physics](#physics)
-			- [RigidBody](#rigidbody)
-	- [Labels](#labels)
-	- [GameManager](#gamemanager)
-- [Hierarchy](#hierarchy)
-- [Sprites](#sprites)
-	- [Sprite Layers](#sprite-layers)
-- [Game Physics](#game-physics)
-- [Scripts](#scripts)
 	- [Collision detection](#collision-detection)
 	- [Random rotations](#random-rotations)
+	- [Layer masks and coroutines](#layer-masks-and-coroutines)
 	- [Custom player control](#custom-player-control)
 	- [Top down shooter](#top-down-shooter)
 - [Input Manager](#input-manager)
@@ -29,6 +21,7 @@
 	- [Add animations to buttons](#add-animations-to-buttons)
 	- [Creating a sliding menu](#creating-a-sliding-menu)
 	- [Adding a video](#adding-a-video)
+
 # Unity UI
 - Hand tool - `Q`
 	- allows you to pan around the scene
@@ -766,16 +759,16 @@ public  class UIManager : MonoBehaviour {
 	- add a background image to this
 - Add buttons to panel content
 - Animate the panel content to slide in and out of the parent panel mask
+
 ## Adding a video
+
 - Create a UI > Raw image
 	- Add component `Video Player`
 - Assets > Create > Custom Render Texture > name it `<video name>_Texture`
 	- Change the size of this texture to match the dimensions of your video (e.g. `600x400`)
 		- And change the `Filter mode` to `Trilinear` for the best quality video
 	- Drag this texture into the `Texture` field of the `Raw Image` component and the `Target Texture` field of the `Video Player` component on the Raw Image GameObject
-
-
-
-
-
-
+- Making the video work in WebGL
+  - [StackOverflow post](https://stackoverflow.com/questions/54856356/webgl-unity-build-wont-play-video)
+  - Basically make a folder `Assets/StreamingAssets`, put video file in there
+  - Then do: `videoPlayer.url = System.IO.Path.Combine(Application.streamingAssetsPath, "videoURL.mp4");`
