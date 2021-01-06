@@ -2,6 +2,23 @@
   - Install with Window > Package Manager
 - Following this [tutorial](https://www.youtube.com/watch?v=PUSOg5YEflM&ab_channel=Brackeys)
 
+- [Intro to UI](#intro-to-ui)
+- [Shape generator](#shape-generator)
+- [Polygon shape tool](#polygon-shape-tool)
+- [Scale a face](#scale-a-face)
+- [Extrude](#extrude)
+- [Create extra geometry easily via edge loops](#create-extra-geometry-easily-via-edge-loops)
+  - [To Create walls](#to-create-walls)
+- [You can move edges](#you-can-move-edges)
+- [Face tools](#face-tools)
+- [Collapse vertices](#collapse-vertices)
+- [Object tools](#object-tools)
+  - [Mirroring objects](#mirroring-objects)
+  - [Merging objects](#merging-objects)
+- [Material editor](#material-editor)
+  - [Setting default texture for ProBuilder](#setting-default-texture-for-probuilder)
+- [UV Editor](#uv-editor)
+
 ## Intro to UI
 
 - Tools > ProBuilder > ProBuilder Window
@@ -22,6 +39,8 @@
       - bring it into a 3D modeling software to add texture, etc.
   - orange = editor tools
     - shape generator, polygon tool
+- Select vertices and edges and move them to snap to the grid
+- Delete faces by selecting them > Backspace
 
 ## Shape generator
 
@@ -47,6 +66,16 @@
 - W for Move tool 
 - Select face and Shift + move it along an axis to extrude it out
 
+## Create extra geometry easily via edge loops
+
+- Select an edge -> Edge loop tool will create an edge loop perpendicular to this edge
+- You can move the edge loop to define extrusions (walls, platforms), holes (doors), etc.
+- Double click and edge to select the whole loop
+
+### To Create walls
+
+- Select faces > Move > Shift Click to extrude
+
 ## You can move edges
 
 - Double click an edge to select all edges it is continuous with
@@ -60,16 +89,41 @@
   - Flip the face normal (make it upside down)
   - Detach face from object
 
+## Collapse vertices
+
+- Select 2 vertices that share an edge > collapse tool
+- You can get really creative to create the geometry you want
+
+## Object tools
+
+### Mirroring objects
+
+- Object select tool
+- Make sure you're in Pivot (not center mode). The mirroring is done around the pivot
+
+### Merging objects
+
+- Select multiple object > merge tool
+- This will change the pivot => use Freeze Transform tool to reset the pivot to 0, 0, 0
+- Colliders might disappear => need to add a Mesh Collider to the merged object
+
 ## Material editor
 
 - Add color and materials to the model
 - Drag in materials you want to be able to apply to models
 - Right click Project > Create Material
   - Shader > ProBuilder > Standard Vertex Color
-  - Choose Texture
+  - Click Base Map to choose the texture
+    - Unhide textures > Use GridBox Default texture for prototyping (comes with ProBuilder)
+      - texture has gridlines
   - Change the tint
 - Select object or face in ProBuilder 
   - => Use Alt + # shortcut in Material Editor to apply material to it
+
+### Setting default texture for ProBuilder
+
+- Edit > Preferences > ProBuilder
+  - Mesh Settings > Drag in material to the Material field
 
 ## UV Editor
 

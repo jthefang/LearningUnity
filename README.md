@@ -23,6 +23,7 @@
 	- [Adding a video](#adding-a-video)
 
 # Unity UI
+- Shift + Space to maximize the scene view
 - Hand tool - `Q`
 	- allows you to pan around the scene
 	- `Right click + WASD` to move around in the scene
