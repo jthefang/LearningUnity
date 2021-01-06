@@ -2,6 +2,9 @@
   - Install with Window > Package Manager
 - Following this [tutorial](https://www.youtube.com/watch?v=PUSOg5YEflM&ab_channel=Brackeys)
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
 - [Intro to UI](#intro-to-ui)
 - [Shape generator](#shape-generator)
 - [Polygon shape tool](#polygon-shape-tool)
