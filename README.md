@@ -1,6 +1,7 @@
 # Table of Contents
 - [Table of Contents](#table-of-contents)
 - [Unity UI](#unity-ui)
+	- [Edit Unity Script Templates](#edit-unity-script-templates)
 - [Assets](#assets)
 	- [Resources](#resources)
 - [Materials](#materials)
@@ -59,6 +60,12 @@
 	- you can save your custom Layout in the Layout dropdown
 - GameManager = normal C# script but is "special" in the sense that it's the brains of the game
 - `Alt + Click` expand triangle in file browser - expands entire hierarchy for that item
+
+## Edit Unity Script Templates
+
+- `C:\Program Files\Unity\Hub\Editor\2019.4.17f1\Editor\Data\Resources\ScriptTemplates`
+  - edit `81-C# Script-NewBehaviourScript.cs` for the MonoBehaviour template
+
 # Assets
 - FBX file = 3D model + animations + textures
 	- could be represented as normal jpg --> Fix Now in Unity to add the normal map (?)
