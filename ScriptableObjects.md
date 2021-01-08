@@ -1,7 +1,8 @@
 Good intro video: https://www.youtube.com/watch?v=lJxy3oTZeCs
 
 # What are they
-- They are a data asset
+- They are a shared data asset
+  - If you want all encapsulated data to be shared across different kinds of objects
 - Useful for storing constant/shared data (e.g. total health, speed) that is used frequently
 
 # How to use

@@ -1,0 +1,122 @@
+- [Intro to Viewport UI](#intro-to-viewport-ui)
+- [Layout Workspace Interface Overview](#layout-workspace-interface-overview)
+- [Select & Transform](#select--transform)
+- [Adding and Deleting Objects](#adding-and-deleting-objects)
+
+## Intro to Viewport UI
+
+- `A` to select all, `Alt + A` to deselect all
+- Edit > Preferences > Keymap > Change Select object to Right click (instead of left)
+  - "arguably better for your help"
+- Top right buttons are tools
+  - Gizmo changes camera orientation 
+    - Clicking axis orients camera to look along it
+    - Click + Drag allows you to rotate the camera around the 3D space
+      - Middle click + Drag achieves the same effect
+  - Hand icon - change the pivot of the camera (center of camera)
+    - Shift + middle mouse drag achieves same thing
+- To refocus on selected item
+  - Select object > View > Frame Selected
+  - Can also use the `.` period key on the numpad to do this
+- Camera icon brings you into the view of your camera (for animation)
+  - or use 0 on numpad
+- Grid icon switches perspective from orthographic (no depth) and perspective (3D) mode
+
+## Layout Workspace Interface Overview
+
+- Bottom bar shows what mouse clicks will do in the current tool context
+- Panels
+  - top left dropdown to select what the panel displays
+  - right click panel > split/join area to create/delete panel
+  - `Ctrl + Space` will maximize a panel
+- Workspace options to set panel layout in top bar
+- `T` for left toolbar
+  - `Shift + Space` to bring up the text toolbar (same toolbar but with text instead of icons)
+- `N` for right tool bar
+  - View bar > 3D cursor 
+    - this is spawn point for new objects!
+    - Shift + Right click to place the cursor
+    - Shift + S > Cursor to World origin to reset cursor to origin
+- Pi menus = quick wheel menus 
+  - Right click to dismiss menu
+  - Press and hold hotkey to initiate Pi menu > Drag cursor to choice and release hotkey
+- Timeline panel is below the viewport
+  - drag timeline with middle mouse button
+- Properties Editor = right panel
+  - Top bar = tool options 
+  - Camera = rendering options
+  - Printer = output options
+  - Pictures = layer options
+  - Scene tab
+  - Globe = world tab
+    - background options for the world
+  - Next tabs are specific for selected object
+    - Object tab
+    - Wrench = modifiers tab (modifies the object in layers)
+    - Particles tab (create particle systems)
+    - Physics tab (physics simulations)
+    - Constraints tab (relationships between objects)
+      - can copy location, have object look at another (track constraint), have object float above floor (floor constraint)
+    - (Green triangle) Mesh tab = shows mesh data
+    - Materials tab = how object is shaded
+    - Texture tab (checkered canvas)
+- Outliner Panel above Properties Editor
+- Create scenes in top right
+- Create layers in top right
+- Can select global light and camera to change light/camera properties
+
+## Select & Transform
+
+- All these are in the quick select tools `T` or `Shift + Space`
+- Select Box
+  - Ctrl + Drag to deselect
+  - `B` for box select tools
+    - use middle click drag to deselect objects
+  - `C` for circle select (selection brush)
+    - middle click drag to deselect objects
+  - The most recently select object is brighter yellow and is the one who's properties are displayed
+- Top right of viewport > Wire frame mode (Top right bar, leftmost circle)
+  - allows you to see through your objects
+- Also the Select menu in top bar of viewport
+- Right click will cancel the transform
+- Holding `Shift` during a transform will reduce the sensitivty of the transform, allowing you to be more precise
+- Move tool (cardinal arrows)
+  - can move along axis, plane
+  - left click drag anywhere in view port to move along viewing port
+  - right click will cancel the transform
+  - X, Y, Z to move along axis
+  - Shift + `X, Y, Z` to scale on plane excluding X, Y, Z respectively
+  - `Alt + G` to reset object to origin
+- Rotate tool
+  - outer white ring rotates the object around the viewing vector
+  - inner white sphere lets you left click + drag to free rotation mode
+  - `Alt + R` to reset rotation of object
+- Scale tool - `S`
+  - scale along axis, plane
+  - left click drag anywhere in the viewport to scale the whole thing
+  - `Alt + S` to reset scale
+- Orange dot on object = pivot of object
+  - pivot of which all transforms happen
+- Red white circle = 3D cursor
+  - it can act as the pivot of any object if go to top center dropdown of viewport > Pivot Point > 3D cursor
+  - 3D cursor tool (quick select menu)
+    - left click and drag to move 3D cursor
+    - or `Shift + Right click` to move 3D cursor
+    - Click `median point` in pivot to reset to center
+  - can also use 3D cursor as where you want object to move to
+    - Object menu > Snap > Selection to Cursor
+    - `Shift + S` gives snap options Pi menu
+- Change coordinate system of object from Global > Local in top center viewport menu
+- Snap menu in top center
+  - Magnet + the dropdown next to it allow you to snap objects to the grid
+
+## Adding and Deleting Objects
+
+- `Shift + A` for Add menu
+  - or Add menu in top of viewport
+- Select object > Object > Delete
+  - Or `X` to delete with confirmation or `Delete` key
+- Go to `Edit mode` (top left dropdown of viewport)
+  - allows you to edit the geometry of the object you have selected
+  - a lot of different delete options here, see [video](https://www.youtube.com/watch?v=JSAobQPRLwc&list=PLa1F2ddGya_-UvuAqHAksYnB0qL9yWDO6&index=5&ab_channel=Blender)
+    - Edge loop will delete the geometry down to the next edge loop
